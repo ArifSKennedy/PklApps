@@ -1,7 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\PesertaController;
+use App\Http\Controllers\MapelController;
+use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\SlotController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -57,6 +62,36 @@ Route::get('pesanan/{makanan?}', function($ayamgoreng = "pesanan kosong") {
     return view('pages.pesanan', compact('a'));
 });
 
-Route::get('makanan/{pilih?}', function($pilih = "Mohon maaf pesanan tidak ada") {
-    return view('pages.makanan', compact('pilih'));
+Route::get('makanan/{pilih?}/{pilih2?}', function($pilih = "Mohon maaf pesanan tidak ada", $pilih2 = "pesanan tidak ada") {
+    return view('pages.makanan', compact('pilih','pilih2'));
 });
+
+use App\Http\Controllers\PengenalanController;
+
+// Passing data dari controller ke view
+Route::get('/pengenalan', [App\Http\Controllers\PengenalanController::class, 'pengenalan']);
+
+// Passing data dinamis(Route parameter) dari controller ke view
+Route::get('/intro/{nama}/{alamat}/{umur}', [App\Http\Controllers\PengenalanController::class, 'intro']);
+
+Route::get('/siswa', [App\Http\Controllers\PengenalanController::class, 'siswa']);
+
+Route::get('/menu', [App\Http\Controllers\LatihanController::class, 'menu']);
+
+Route::get('/dosen', [App\Http\Controllers\LatihanController::class, 'dosen']);
+Route::get('/televisi', [App\Http\Controllers\LatihanController::class, 'televisi']);
+Route::get('/post', [PostController::class, 'index']);
+
+Route::get('/murid', [SiswaController::class, 'siswa']);
+Route::get('/peserta', [PesertaController::class, 'peserta']);
+Route::get('/mapel', [MapelController::class, 'mapel']);
+Route::get('/pegawai', [PegawaiController::class, 'pegawai']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+Route::resource('slot', SlotController::class);
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
